@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 const PORT = 5000;
 
 // Middleware
+app.use(cors()); // Enable CORS for all routes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

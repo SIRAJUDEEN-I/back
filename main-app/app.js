@@ -1,11 +1,13 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 
 const app = express();
 const PORT = 4000;
 const RECEIVER_SERVICE_URL = 'http://localhost:5000';
 
 // Middleware to parse form data and JSON
+app.use(cors()); // Enable CORS for all routes
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
