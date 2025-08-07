@@ -131,12 +131,26 @@ app.post('/api/post', async (req, res) => {
         
         // Send data to receiver service with appropriate HTTP method
         try {
-            const response = await httpMethod(`${RECEIVER_SERVICE_URL}/api/postdata/db`, processedData, {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                timeout: 10000 // 10 second timeout
-            });
+            let response;
+            
+            if (action.toLowerCase() === 'delete') {
+                // For DELETE, pass data in config object
+                response = await axios.delete(`${RECEIVER_SERVICE_URL}/api/postdata/db`, {
+                    data: processedData,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 10000 // 10 second timeout
+                });
+            } else {
+                // For POST and PUT, pass data as second parameter
+                response = await httpMethod(`${RECEIVER_SERVICE_URL}/api/postdata/db`, processedData, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    timeout: 10000 // 10 second timeout
+                });
+            }
             
             console.log('📤 Data processed by receiver service with', httpMethodName, ':', response.data);
             
